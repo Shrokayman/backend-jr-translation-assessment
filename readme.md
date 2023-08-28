@@ -55,7 +55,7 @@ Write unit tests to cover the authentication and translation functionality. Ensu
 
 Your deadline for completing this assessment is Sunday, September 03, 2023, at 05:00 PM.
 
-**Evaluation Criteria:**
+## **Evaluation Criteria:**
 
 You will be assessed based on the following criteria:
 
@@ -67,7 +67,7 @@ You will be assessed based on the following criteria:
 - Efficient use of the chosen tech stack
 - Documentation quality and clarity
 
-**Submission:**
+## **Submission:**
 
 Fork this repository and submit your solution by pushing your code to your forked repository. Provide the link to your repository by emailed to <backend@contact.com> before the deadline.
 Best of luck, and we look forward to seeing your integration in action!
