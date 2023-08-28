@@ -65,7 +65,7 @@ You will be assessed based on the following criteria:
 - Proper error handling and validation
 - Bonus task completion (password reset, multi-language translation, pagination, unit testing)
 - Efficient use of the chosen tech stack
-- Documentation quality and clarity
+- Clear Documentation or a Postman Collection for testing the endpoints.
 
 ## **Submission:**
 
