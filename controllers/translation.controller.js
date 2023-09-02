@@ -13,7 +13,7 @@ async function detectLanguageByGoogle(data) {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded',
                 'Accept-Encoding': 'application/gzip',
-                'X-RapidAPI-Key': '9f8f841471msh7a84e2114a9d453p1ab70djsn1cdb4b913e87',
+                'X-RapidAPI-Key': process.env.RAPID_API_Key,
                 'X-RapidAPI-Host': 'google-translate1.p.rapidapi.com'
             },
             data: {
@@ -35,7 +35,7 @@ async function fetchTranslationByGoogle(data) {
             headers: {
                 'content-type': 'application/x-www-form-urlencoded',
                 'Accept-Encoding': 'application/gzip',
-                'X-RapidAPI-Key': '9f8f841471msh7a84e2114a9d453p1ab70djsn1cdb4b913e87',
+                'X-RapidAPI-Key': process.env.RAPID_API_Key,
                 'X-RapidAPI-Host': 'google-translate1.p.rapidapi.com'
             },
             data: {
@@ -74,7 +74,7 @@ async function detectLanguageByMicrosoft(data) {
             },
             headers: {
                 'content-type': 'application/json',
-                'X-RapidAPI-Key': '9f8f841471msh7a84e2114a9d453p1ab70djsn1cdb4b913e87',
+                'X-RapidAPI-Key': process.env.RAPID_API_Key,
                 'X-RapidAPI-Host': 'microsoft-translator-text.p.rapidapi.com'
             },
             data: [
@@ -104,7 +104,7 @@ async function fetchTranslationByMicrosoft(data) {
             },
             headers: {
                 'content-type': 'application/json',
-                'X-RapidAPI-Key': '9f8f841471msh7a84e2114a9d453p1ab70djsn1cdb4b913e87',
+                'X-RapidAPI-Key': process.env.RAPID_API_Key,
                 'X-RapidAPI-Host': 'microsoft-translator-text.p.rapidapi.com'
             },
             data: [
