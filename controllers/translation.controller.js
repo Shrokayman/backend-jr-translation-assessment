@@ -161,9 +161,29 @@ export const translate = asyncHandler(async (req, res, next) => {
     dataResponse(res, 201, { translatedText, translation })
 })
 
+// Paginated
 export const getTranslationHistory = asyncHandler(async (req, res, next) => {
+    const { page, size } = req.query;
+    const { limit, offset } = getPagination(+page, +size);
     const userId = req.user.id
-    const translations = await Translation
-    .findAll({ where: { userId }, attributes: ['text', 'translation', 'sourceLang', 'targetLang', 'engine'] })
-    dataResponse(res, 201, translations)
+    const translations = await Translation.findAndCountAll({
+        where: { userId },
+        limit,
+        offset,
+        attributes: ['text', 'translation', 'sourceLang', 'targetLang', 'engine']
+    })
+    const response = getPagingData(translations, page, limit);
+    dataResponse(res, 201, response)
 })
+
+const getPagination = (page, size) => {
+    const limit = size ? +size : 3;
+    const offset = page ? page * limit : 0;
+    return { limit, offset };
+};
+const getPagingData = (data, page, limit) => {
+    const { count: totalItems, rows: translations } = data;
+    const currentPage = page ? +page : 0;
+    const totalPages = Math.ceil(totalItems / limit);
+    return { totalItems, translations, totalPages, currentPage };
+};
