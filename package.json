@@ -1,0 +1,40 @@
+{
+  "name": "backend-jr-translation-assessment",
+  "version": "1.0.0",
+  "description": "Welcome to the backend developer assessment for integrating authentication and translation services!\r This assessment is designed to assess your skills in working on integration with third parties and designing well-structured and maintainable code.",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shrokayman/backend-jr-translation-assessment.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shrokayman/backend-jr-translation-assessment/issues"
+  },
+  "homepage": "https://github.com/Shrokayman/backend-jr-translation-assessment#readme",
+  "dependencies": {
+    "axios": "^1.5.0",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "colors": "^1.4.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.10.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.32.1",
+    "sequelize-cli": "^6.6.1",
+    "winston": "^3.10.0"
+  }
+}
