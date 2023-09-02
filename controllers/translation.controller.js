@@ -163,6 +163,7 @@ export const translate = asyncHandler(async (req, res, next) => {
 
 export const getTranslationHistory = asyncHandler(async (req, res, next) => {
     const userId = req.user.id
-    const translations = await Translation.findAll({ where: { userId } })
+    const translations = await Translation
+    .findAll({ where: { userId }, attributes: ['text', 'translation', 'sourceLang', 'targetLang', 'engine'] })
     dataResponse(res, 201, translations)
 })
