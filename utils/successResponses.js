@@ -4,6 +4,6 @@ export const dataResponse = (res, statusCode, data) => {
 };
 
 // Sending response with status code and message
-export const messageResponse = (res, req, statusCode, message) => {
-    res.status(statusCode).send({ isSuccess: true, message: req.t(message) });
+export const messageResponse = (res, statusCode, message) => {
+    res.status(statusCode).send({ isSuccess: true, message });
 };

@@ -1,11 +1,12 @@
 import { ErrorResponse } from '../utils/errorResponse.js';
 import { User } from '../models/User.js';
-import { dataResponse, messageResponse } from '../utils/successResponses.js';
+import { dataResponse } from '../utils/successResponses.js';
 import { asyncHandler } from '../middlewares/async.js';
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import { sendEmail } from '../utils/Emails.js';
 
-// asyncHandler is used to handle try and catch operations
+// asyncHandler() is used to handle try and catch operations
 
 export const register = asyncHandler(async (req, res, next) => {
     const user = await User.create(req.body)
@@ -45,9 +46,49 @@ export const login = asyncHandler(async (req, res, next) => {
     dataResponse(res, 201, data)
 })
 
+export const requestResetPassword = asyncHandler(async (req, res, next) => {
+    const { email } = req.body
+    const user = await User.findOne({ where: { email } })
+    if (!user)
+        return next(new ErrorResponse("This user is not exist", 404));
+    const resetPasswordOtp = generateOTP(6);
+    await user.update({ resetPasswordOtp })
+    const emailData = {
+        email: user.email,
+        subject: 'Your password reset link',
+        isHtml: true,
+        template: 'forget_password',
+        context: {
+            name: user.name,
+            reset_link: '' + process.env.RESET_PASSWORD_PAGE + '?email=' + user.email + '&code=' + resetPasswordOtp + '',
+        },
+    }
+    sendEmail(emailData)
+    res.status(201).json({ isSuccess: true, message: "Check your mail to reset your password" })
+})
+
+export const resetPassword = asyncHandler(async (req, res, next) => {
+    const { email, password, code } = req.body
+    const user = await User.findOne({ where: { email } })
+    if (!user)
+        return next(new ErrorResponse("This user is not exist", 404));
+    if (user.resetPasswordOtp !== code)
+        return next(new ErrorResponse("Invalid OTP", 400))
+    await user.update({ password })
+    res.status(201).json({ isSuccess: true, message: "Your password has been reset successfuly" })
+})
+
 function generateToken(user) {
     let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRY,
     });
     return token;
+}
+
+function generateOTP(otpLength) {
+    var digits = "0123456789";
+    let OTP = "";
+    for (let i = 0; i < otpLength; i++)
+        OTP += digits[Math.floor(Math.random() * 10)];
+    return OTP;
 }

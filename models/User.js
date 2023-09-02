@@ -31,6 +31,9 @@ const User = sequelize.define('User', {
             this.setDataValue('password', hashedPassword);
         },
     },
+    resetPasswordOtp: {
+        type: DataTypes.STRING,
+    },
 }, { timestamps: true });
 
 User.associate = (models) => {
