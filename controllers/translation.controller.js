@@ -151,7 +151,7 @@ export const translate = asyncHandler(async (req, res, next) => {
         : response.translations[0].source;
     const engine = response.length > 0 ? response[0].translations[0].engine
         : response.translations[0].engine;
-    const translation = await Translation.create({
+    await Translation.create({
         text: query,
         translation: translatedText,
         sourceLang: source,
@@ -159,7 +159,7 @@ export const translate = asyncHandler(async (req, res, next) => {
         engine: engine,
         userId: req.user.id
     })
-    dataResponse(res, 201, { translatedText, translation })
+    dataResponse(res, 201, { translatedText })
 })
 
 // Paginated
