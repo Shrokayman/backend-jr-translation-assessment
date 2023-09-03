@@ -41,7 +41,7 @@ async function fetchTranslationByGoogle(data) {
             },
             data: {
                 q: data.query,
-                target: data.target,
+                target: data.targets.join(','),
                 source: data.source,
             }
         };
@@ -97,7 +97,7 @@ async function fetchTranslationByMicrosoft(data) {
             method: 'POST',
             url: 'https://microsoft-translator-text.p.rapidapi.com/translate',
             params: {
-                'to[0]': data.target,
+                'to': data.targets.join(','),
                 from: data.source,
                 'api-version': '3.0',
                 profanityAction: 'NoAction',
@@ -137,9 +137,11 @@ async function finalPerformTranslationByMicrosoft(data) {
 
 
 export const translate = asyncHandler(async (req, res, next) => {
-    const { target, query } = req.body
-    if (!target)
+    const { targets, query } = req.body
+    if (!targets)
         return next(new ErrorResponse("the target language is required", 400));
+    if (targets.length < 1)
+        return next(new ErrorResponse("Please provide at least one target", 400));
     if (!query)
         return next(new ErrorResponse("the query is required", 400));
     let response;
@@ -148,21 +150,29 @@ export const translate = asyncHandler(async (req, res, next) => {
         response = await finalPerformTranslationByMicrosoft(req.body);
     if (response === -1)
         return next(new ErrorResponse("An error occured", 500));
-    const translatedText = response.length > 0 ? response[0].translations[0].text
-        : response.translations[0].translatedText;
     const source = response.length > 0 ? response[0].translations[0].source
         : response.translations[0].source;
     const engine = response.length > 0 ? response[0].translations[0].engine
         : response.translations[0].engine;
+    const translations = []
+    if (response.length > 0) {
+        response[0].translations.forEach(obj => {
+            translations.push({ language: obj.to, translatedText: obj.text })
+        })
+    } else {
+        response.translations.forEach(obj => {
+            translations.push({ language: obj.target, translatedText: obj.translatedText })
+        })
+    }
     await Translation.create({
         text: query,
-        translation: translatedText,
+        translations: translations,
         sourceLang: source,
-        targetLang: target,
+        targetLang: targets,
         engine: engine,
         userId: req.user.id
     })
-    dataResponse(res, 201, { translatedText })
+    dataResponse(res, 201, { response })
 })
 
 // With Pagination

@@ -14,7 +14,7 @@ const Translation = sequelize.define('Translation', {
         type: DataTypes.UUID,
         foreignKey: true,
         references: {
-            model: User, 
+            model: User,
             key: 'id',
         },
         allowNull: false,
@@ -23,8 +23,8 @@ const Translation = sequelize.define('Translation', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    translation: {
-        type: DataTypes.STRING,
+    translations: {
+        type: DataTypes.ARRAY(DataTypes.JSONB),
         allowNull: false,
     },
     sourceLang: {
@@ -32,7 +32,7 @@ const Translation = sequelize.define('Translation', {
         allowNull: false,
     },
     targetLang: {
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: false,
     },
     engine: {
