@@ -1,14 +1,13 @@
 import { ErrorResponse } from '../utils/errorResponse.js';
 import { User } from '../models/User.js';
 import { dataResponse } from '../utils/successResponses.js';
-import { asyncHandler } from '../middlewares/async.js';
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { sendEmail } from '../utils/Emails.js';
-
-// asyncHandler() is used to handle try and catch operations
+import { asyncHandler } from '../middlewares/async.js'; //Used to handle try catch operations
 
 export const register = asyncHandler(async (req, res, next) => {
+    // The validations is seperated in a middleware
     const user = await User.create(req.body)
     if (!user)
         return next(new ErrorResponse("Details are not correct", 409));
@@ -78,13 +77,13 @@ export const resetPassword = asyncHandler(async (req, res, next) => {
     res.status(201).json({ isSuccess: true, message: "Your password has been reset successfuly" })
 })
 
+// -------------------------------helper metshod-------------------------------
 function generateToken(user) {
     let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRY,
     });
     return token;
 }
-
 function generateOTP(otpLength) {
     var digits = "0123456789";
     let OTP = "";

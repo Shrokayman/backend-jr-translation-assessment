@@ -1,8 +1,10 @@
 import { ErrorResponse } from '../utils/errorResponse.js';
 import { Translation } from "../models/Translation.js"
 import { dataResponse } from '../utils/successResponses.js';
-import { asyncHandler } from '../middlewares/async.js';
+import { asyncHandler } from '../middlewares/async.js'; //Used to handle try catch operations
 import axios from 'axios';
+
+// -------------------Third party integrations helper functions-------------------
 
 async function detectLanguageByGoogle(data) {
     try {
@@ -131,6 +133,8 @@ async function finalPerformTranslationByMicrosoft(data) {
     translateResponse[0].translations[0].engine = "Microsoft Translator Text"
     return translateResponse
 }
+// ----------------------------------------------------------------------------
+
 
 export const translate = asyncHandler(async (req, res, next) => {
     const { target, query } = req.body
@@ -161,7 +165,7 @@ export const translate = asyncHandler(async (req, res, next) => {
     dataResponse(res, 201, { translatedText })
 })
 
-// Paginated
+// With Pagination
 export const getTranslationHistory = asyncHandler(async (req, res, next) => {
     const { page, size } = req.query;
     const { limit, offset } = getPagination(+page, +size);
@@ -176,6 +180,8 @@ export const getTranslationHistory = asyncHandler(async (req, res, next) => {
     dataResponse(res, 201, response)
 })
 
+
+// -------------------------------helper methods-------------------------------
 const getPagination = (page, size) => {
     const limit = size ? +size : 3;
     const offset = page ? page * limit : 0;
