@@ -139,7 +139,8 @@ export const translate = asyncHandler(async (req, res, next) => {
         return next(new ErrorResponse("the target language is required", 400));
     if (!query)
         return next(new ErrorResponse("the query is required", 400));
-    let response = await finalPerformTranslationByGoogle(req.body)
+    let response;
+    response = await finalPerformTranslationByGoogle(req.body)
     if (response === -1)
         response = await finalPerformTranslationByMicrosoft(req.body);
     if (response === -1)
